@@ -4,19 +4,25 @@ package com.example.backend.controller;
 import com.example.backend.dto.TodoDto;
 import com.example.backend.response.Response;
 import com.example.backend.service.TodoService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping(value = "v1/api/todo")
 @CrossOrigin
 public class TodoController {
     private TodoService todoService;
+
+    @Autowired
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
+    }
+
+    public TodoController() {
+
+    }
 
     @GetMapping("/")
     public ResponseEntity<Response> getFirstFiveTodos(){
