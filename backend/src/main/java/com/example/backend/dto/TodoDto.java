@@ -1,15 +1,13 @@
-package com.example.backend.model;
+package com.example.backend.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@NoArgsConstructor
+
 @AllArgsConstructor
-@Table(name="task")
-public class TodoModel {
+@NoArgsConstructor
+public class TodoDto {
     public long getTaskId() {
         return taskId;
     }
@@ -42,10 +40,10 @@ public class TodoModel {
         this.completed = completed;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long taskId;
     private String title;
     private String description;
     private boolean completed;
+
+
 }
