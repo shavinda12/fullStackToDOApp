@@ -41,6 +41,14 @@ public class TodoDto {
     }
 
     private long taskId;
+
+    //testing purposes
+    public TodoDto(String title, String description, boolean completed) {
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+    }
+
     private String title;
     private String description;
     private boolean completed;

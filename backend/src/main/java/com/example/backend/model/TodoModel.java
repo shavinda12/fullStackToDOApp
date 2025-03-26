@@ -1,16 +1,10 @@
 package com.example.backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name="task")
 public class TodoModel {
-
 
     public long getTaskId() {
         return taskId;
@@ -47,7 +41,9 @@ public class TodoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long taskId;
-
+    private String title;
+    private String description;
+    private boolean completed;
 
     //this is for testing purposes
     public TodoModel(String title, String description, boolean completed) {
@@ -55,9 +51,14 @@ public class TodoModel {
         this.description = description;
         this.completed = completed;
     }
+    public TodoModel(long taskId, String title, String description, boolean completed) {
+        this.taskId = taskId;
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+    }
 
-    private String title;
-    private String description;
-    private boolean completed;
+    public TodoModel() {
+    }
 
 }
