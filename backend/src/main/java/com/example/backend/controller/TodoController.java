@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping(value = "v1/api/todo")
 @CrossOrigin
 public class TodoController {
-    @Autowired
     private TodoService todoService;
 
     @GetMapping("/")
