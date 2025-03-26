@@ -5,8 +5,8 @@ import com.example.backend.model.TodoModel;
 import com.example.backend.repository.TodoRepo;
 import com.example.backend.response.Response;
 import com.example.backend.response.SuccessResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -36,6 +36,11 @@ class TodoServiceTest {
         underTest=new TodoService(todoRepo,modelMapper);
     }
 
+    @AfterEach
+    void tearDown() {
+        todoRepo.deleteAll();
+    }
+
     @Test
     void canGetFirstFiveTodos() {
         //when
@@ -54,28 +59,54 @@ class TodoServiceTest {
         TodoModel savedTodoModel = new TodoModel(1, "Task A", "Description A", true);  // Saved TodoModel with an ID
 
         // When
-        when(modelMapper.map(todoDto, TodoModel.class)).thenReturn(todoModel);  // Mock mapping
-        when(todoRepo.save(todoModel)).thenReturn(savedTodoModel);  // Mock saving in repository
-        when(modelMapper.map(savedTodoModel, TodoDto.class)).thenReturn(todoDto);  // Mock mapping back to TodoDto
+        when(modelMapper.map(todoDto, TodoModel.class)).thenReturn(todoModel);
+        when(todoRepo.save(todoModel)).thenReturn(savedTodoModel);
+        when(modelMapper.map(savedTodoModel, TodoDto.class)).thenReturn(todoDto);
 
-        ResponseEntity<Response> response = underTest.saveTodo(todoDto);  // Call the saveTodo method
+
+        ResponseEntity<Response> response = underTest.saveTodo(todoDto);
 
         // Then
-        verify(todoRepo).save(todoModel);  // Verify that the save method was called on the repository
-        verify(modelMapper).map(todoDto, TodoModel.class);  // Verify that map was called on the modelMapper
+        verify(todoRepo).save(todoModel);
+        verify(modelMapper).map(todoDto, TodoModel.class);
 
-        // Assert that the response status is OK
+
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        // Assert that the response body is of type SuccessResponse and contains the correct TodoDto
+
         assertTrue(response.getBody() instanceof SuccessResponse);
         SuccessResponse<TodoDto> successResponse = (SuccessResponse<TodoDto>) response.getBody();
-        assertEquals(todoDto, successResponse.getData());  // Assert the saved TodoDto is returned
+        assertEquals(todoDto, successResponse.getData());
 
     }
 
     @Test
-    @Disabled
-    void deleteTodo() {
+    void canDeleteTodoSuccessfully() {
+        // Given
+        long taskId = 1L;
+        when(todoRepo.updateIsCompletedToTrue(taskId)).thenReturn(1);  // Simulate successful update
+
+        // When
+        ResponseEntity<Response> response = underTest.deleteTodo(taskId);
+
+        // Then
+        verify(todoRepo).updateIsCompletedToTrue(taskId);  // Verify that updateIsCompletedToTrue was called
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    void cannotDeleteTodoWhenTaskNotFound() {
+        // Given
+        long taskId = 1L;
+        when(todoRepo.updateIsCompletedToTrue(taskId)).thenReturn(0);  // Simulate task not found (not updated)
+
+        // When
+        ResponseEntity<Response> response = underTest.deleteTodo(taskId);
+
+        // Then
+        verify(todoRepo).updateIsCompletedToTrue(taskId);  // Verify that updateIsCompletedToTrue was called
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());  // Assert the status is NOT_FOUND
+    }
+
+
 }

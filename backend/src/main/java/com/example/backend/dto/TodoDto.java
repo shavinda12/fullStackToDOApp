@@ -1,13 +1,10 @@
 package com.example.backend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class TodoDto {
+
     public long getTaskId() {
         return taskId;
     }
@@ -40,7 +37,22 @@ public class TodoDto {
         this.completed = completed;
     }
 
+
     private long taskId;
+    private String title;
+    private String description;
+    private boolean completed;
+
+
+    public TodoDto(long taskId, String title, String description, boolean completed) {
+        this.taskId = taskId;
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+    }
+
+    public TodoDto() {
+    }
 
     //testing purposes
     public TodoDto(String title, String description, boolean completed) {
@@ -48,10 +60,6 @@ public class TodoDto {
         this.description = description;
         this.completed = completed;
     }
-
-    private String title;
-    private String description;
-    private boolean completed;
 
 
 }
