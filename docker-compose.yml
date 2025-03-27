@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # Backend Service (Spring Boot)
   backend:
     build:
       context: ./backend
@@ -15,6 +16,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root123
 
+  # Database Service (MySQL)
   db:
     image: mysql:8.0
     container_name: mysql-db
@@ -24,3 +26,36 @@ services:
       MYSQL_DATABASE: tododb
     ports:
       - "3307:3306"
+
+
+  # Frontend (React) Service
+  # frontend:
+  #   build:
+  #     context: ./frontend  # Path to the frontend folder
+  #     dockerfile: Dockerfile  # Path to the React Dockerfile
+  #   container_name: react-app
+  #   ports:
+  #     - "5173:5173"  # Map React app port to host port
+  #   volumes:
+  #     - ./frontend:/app  # Mount the frontend code for live reloading (optional)
+  #   depends_on:
+  #     - backend  # Start after backend (or optional depending on your app needs)
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true  # For React's hot-reload to work inside Docker    
+
+  frontend:
+    image: react-vite-app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'
+    container_name: react-vite-container
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules 
+    depends_on:
+      - backend  # Start after backend (or optional depending on your app needs)  
