@@ -19,7 +19,7 @@ const TaskContainer = ({title,description,taskId,onTaskUpdated}:TaskContainerPro
             onSuccess:(data)=>{
                 onTaskUpdated(data)
             },
-            onError:(error)=>{
+            onError:()=>{
                 onTaskUpdated("Internal Server Error")
             }
         })

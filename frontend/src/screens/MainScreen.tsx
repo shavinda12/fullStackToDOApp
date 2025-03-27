@@ -6,7 +6,6 @@ import {
   Input,
   Text,
   Textarea,
-  Toaster,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -47,12 +46,12 @@ const MainScreen = () => {
 
   const onSubmit = (data: FormData) => {
     postTask.mutate(data, {
-      onSuccess: (data) => {
+      onSuccess: () => {
         toast.success("Task added successfully!");
         queryClient.invalidateQueries({ queryKey: ["taskList"] });
         reset();
       },
-      onError:(error)=>{
+      onError:()=>{
         toast.success("Something went wrong");
       }
     });
