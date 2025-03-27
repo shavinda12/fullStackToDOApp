@@ -24,24 +24,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: tododb
+      TZ: UTC
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persistent database storage
+    command: --default-authentication-plugin=mysql_native_password  
     ports:
-      - "3307:3306"
-
-
-  # Frontend (React) Service
-  # frontend:
-  #   build:
-  #     context: ./frontend  # Path to the frontend folder
-  #     dockerfile: Dockerfile  # Path to the React Dockerfile
-  #   container_name: react-app
-  #   ports:
-  #     - "5173:5173"  # Map React app port to host port
-  #   volumes:
-  #     - ./frontend:/app  # Mount the frontend code for live reloading (optional)
-  #   depends_on:
-  #     - backend  # Start after backend (or optional depending on your app needs)
-  #   environment:
-  #     - CHOKIDAR_USEPOLLING=true  # For React's hot-reload to work inside Docker    
+      - "3307:3306"    
+  
 
   frontend:
     image: react-vite-app
@@ -59,3 +48,7 @@ services:
       - /app/node_modules 
     depends_on:
       - backend  # Start after backend (or optional depending on your app needs)  
+
+volumes:
+  mysql_data:
+    driver: local
