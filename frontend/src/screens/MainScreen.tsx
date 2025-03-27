@@ -10,6 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import TaskContainer from "@/components/TaskContainer";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required").max(100, "Title is too long"),
@@ -123,7 +124,23 @@ const MainScreen = () => {
                 </form>
               </Box>
             </GridItem>
-            <GridItem colSpan={1}></GridItem>
+            <GridItem colSpan={1} display="flex" flexDirection="row" justifyContent="center" alignItems="center">
+                <Box maxHeight="500px" overflowY="auto"
+                style={{
+                    scrollbarWidth: "none",  // For Firefox
+                    msOverflowStyle: "none", // For Internet Explorer
+                  }}
+                  width="75%"
+                  height="100%"
+                  justifyContent="flex-start">
+                <TaskContainer/>
+                <TaskContainer/>
+                <TaskContainer/>
+                <TaskContainer/>
+                <TaskContainer/>
+                </Box>
+                
+            </GridItem>
           </Grid>
         </Box>
       </Box>
