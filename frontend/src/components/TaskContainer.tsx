@@ -1,7 +1,32 @@
+import useUpdateTask from "@/hooks/useUpdateTask";
 import { Box, Button, Text } from "@chakra-ui/react";
-import React from "react";
 
-const TaskContainer = () => {
+interface TaskContainerProps{
+    title:string,
+    description:string,
+    taskId: number, 
+   onTaskUpdated: (message: string) => void;
+}
+
+
+
+const TaskContainer = ({title,description,taskId,onTaskUpdated}:TaskContainerProps) => {
+
+    const updateTask=useUpdateTask();
+
+    const handleDone=()=>{
+        updateTask.mutate(taskId,{
+            onSuccess:(data)=>{
+                onTaskUpdated(data)
+            },
+            onError:(error)=>{
+                onTaskUpdated("Internal Server Error")
+            }
+        })
+    }
+
+
+
   return (
     <>
       <Box
@@ -17,7 +42,7 @@ const TaskContainer = () => {
         pr={5}
         mt={2}
       >
-        <Text fontSize="md" color="#000">Hello World</Text>
+        <Text fontSize="md" color="#000">{title}</Text>
         <Box
           display="flex"
           flexDirection="row"
@@ -26,12 +51,12 @@ const TaskContainer = () => {
           mt={2}
         >
             <Box width="80%" paddingRight={2}>
-            <Text fontSize="sm" color="#000">This is a description about</Text>
+            <Text fontSize="sm" color="#000">{description}</Text>
           </Box>
 
           {/* Button (20% width) */}
           <Box width="20%">
-            <Button width="100%" variant="outline" color="#000" size="xs" _hover={{backgroundColor:"#fff"}}>
+            <Button width="100%" variant="outline" color="#000" size="xs" _hover={{backgroundColor:"#fff"}} onClick={handleDone}>
               Done
             </Button>
             
