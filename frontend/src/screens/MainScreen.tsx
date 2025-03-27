@@ -197,7 +197,7 @@ const MainScreen = () => {
                 ) : error ? (
                   <Text color="red.500">Error: {error.message}</Text>
                 ) : data?.length === 0 ? (
-                  <Text color="black">Hurry Up Put Tasks</Text>
+                  <Text color="black">Hurry Up Manage Your Tasks</Text>
                 ) : (
                   (data || []).map((task) => (
                     <TaskContainer
