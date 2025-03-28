@@ -33,8 +33,10 @@ services:
       - mysql_data:/var/lib/mysql  # Persistent database storage
     command: --default-authentication-plugin=mysql_native_password  
     ports:
-      - "3307:3306"    
-  
+      - "3307:3306" 
+
+
+
 
   frontend:
     image: react-vite-app
@@ -51,7 +53,10 @@ services:
       - ./frontend:/app
       - /app/node_modules 
     depends_on:
-      - backend  # Start after backend (or optional depending on your app needs)  
+      - backend
+
+
+
 
 volumes:
   mysql_data:
